@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K20 | Elite Clan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,700;0,900;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --white: #ffffff;
+            --gold: #D4AF37;
+            --black: #000000;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--white);
+            overflow-x: hidden;
+            background-color: #000; /* Fallback */
+        }
+
+        /* --- FIX #1: PERMANENT BACKGROUND IMAGE --- */
+        .fixed-bg {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -2;
+            /* This is a permanent, high-quality snow base image */
+            background-image: url('https://images.unsplash.com/photo-1520950237264-aeb8a0c1f2e8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .dark-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+            background: rgba(0,0,0,0.6); /* Dark tint for readability */
+        }
+
+        /* --- FIX #2: GUARANTEED CSS SNOW --- */
+        .snow-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: #fff;
+            font-size: 1.5em; /* Large size */
+            text-shadow: 0 0 5px #fff;
+            animation: fall linear infinite;
+            opacity: 0.8;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0.3; }
+        }
+
+        /* --- MAIN CONTENT --- */
+        #main-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            padding: 30px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(0,0,0,0.5);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logo {
+            font-family: 'Bodoni Moda', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .nav-links { display: flex; gap: 50px; list-style: none; }
+        .nav-links a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover { color: var(--white); }
+
+        /* Hero */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-family: 'Bodoni Moda', serif;
+            font-size: 15rem;
+            line-height: 0.8;
+            font-weight: 900;
+            margin-bottom: 20px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            letter-spacing: 10px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 50px;
+        }
+
+        .btn-luxury {
+            padding: 20px 60px;
+            border: 1px solid var(--white);
+            color: var(--white);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 0.9rem;
+            transition: all 0.4s;
+            background: rgba(0,0,0,0.3);
+        }
+
+        .btn-luxury:hover {
+            background: var(--white);
+            color: #000;
+        }
+
+        /* Sections */
+        .section {
+            padding: 100px 10%;
+            background: rgba(0,0,0,0.85);
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .section-title {
+            font-family: 'Bodoni Moda', serif;
+            font-size: 4rem;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        .section-title span { color: var(--gold); }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.05);
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            font-family: 'Bodoni Moda', serif;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--white);
+        }
+
+        .card p { color: #aaa; line-height: 1.6; }
+
+        /* Gallery - Using your links */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* Requirements */
+        .req-list {
+            list-style: none;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .req-list li {
+            font-size: 1.3rem;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            color: #ccc;
+        }
+
+        .req-list strong { color: var(--white); }
+
+        footer {
+            padding: 40px;
+            text-align: center;
+            background: #000;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .socials a { color: #444; margin: 0 20px; font-size: 1.5rem; transition: 0.3s; }
+        .socials a:hover { color: var(--white); }
+
+        @media (max-width: 768px) {
+            .hero-title { font-size: 5rem; }
+            .grid-3 { grid-template-columns: 1fr; }
+            .gallery-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PERMANENT BACKGROUND -->
+    <div class="fixed-bg"></div>
+    <div class="dark-overlay"></div>
+
+    <!-- CSS SNOW (WORKS 100%) -->
+    <div class="snow-container" id="snow-container"></div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main-content">
+        <nav>
+            <div class="logo">K20</div>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#ops">Ops</a></li>
+                <li><a href="#req">Join</a></li>
+            </ul>
+        </nav>
+
+        <section class="hero">
+            <h1 class="hero-title">K20</h1>
+            <div class="hero-subtitle">International Elite</div>
+            <a href="https://discord.gg/nNaDh3jK3y" class="btn-luxury">Request Access</a>
+        </section>
+
+        <section class="section" id="about">
+            <h2 class="section-title">The <span>Syndicate</span></h2>
+            <div class="grid-3">
+                <div class="card">
+                    <h3>Global Reach</h3>
+                    <p>Operations across AU & US sectors. 24/7 dominance.</p>
+                </div>
+                <div class="card">
+                    <h3>The Collective</h3>
+                    <p>30-60 operatives. A coordinated unit of power.</p>
+                </div>
+                <div class="card">
+                    <h3>Tactics</h3>
+                    <p>Specialists in fortification and tactical elimination.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="ops">
+            <h2 class="section-title">Operations <span>Log</span></h2>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://z-cdn-media.chatglm.cn/files/26ce8a17-ae5d-4424-af88-343fbd5ffe44.png?auth_key=1873795782-cb01283570c34ed5abc3dd9b7b8fd700-0-750cbfc1d3741d205532c48a2385bf26" alt="Op 1">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://z-cdn-media.chatglm.cn/files/d4a2f3d6-388e-45e2-999e-a0332d27f99a.png?auth_key=1873795782-4e069e5b7be3459eb580f1ac08154821-0-1a2d371c941bb6de4ecebae7bbc657fd" alt="Op 2">
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="req">
+            <h2 class="section-title">Entry <span>Requirements</span></h2>
+            <ul class="req-list">
+                <li><strong>No Game Bans</strong> on record.</li>
+                <li>Must provide <strong>Main & Alt Steam</strong>.</li>
+                <li>Minimum <strong>16 Years</strong> of age.</li>
+                <li>Minimum <strong>4,000 Hours</strong> playtime.</li>
+            </ul>
+        </section>
+
+        <footer>
+            <div class="socials">
+                <a href="https://discord.gg/nNaDh3jK3y"><i class="fab fa-discord"></i></a>
+                <a href="#"><i class="fab fa-steam"></i></a>
+            </div>
+            <p style="color:#333; margin-top:20px;">K20 CLAN 2023</p>
+        </footer>
+    </div>
+
+    <!-- SIMPLE SNOW SCRIPT -->
+    <script>
+        // Create 50 snowflakes
+        const container = document.getElementById('snow-container');
+        for(let i=0; i<50; i++) {
+            const flake = document.createElement('div');
+            flake.className = 'snowflake';
+            flake.innerHTML = '❄'; // Snowflake character
+            
+            // Random position and speed
+            flake.style.left = Math.random() * 100 + '%';
+            flake.style.animationDuration = (Math.random() * 3 + 2) + 's'; // 2-5s duration
+            flake.style.fontSize = (Math.random() * 1.5 + 0.5) + 'em';
+            flake.style.opacity = Math.random() * 0.6 + 0.4;
+            
+            container.appendChild(flake);
+        }
+    </script>
+</body>
+</html>
